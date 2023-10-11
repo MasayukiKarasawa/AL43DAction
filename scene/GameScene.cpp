@@ -1,19 +1,35 @@
 #include "GameScene.h"
 #include "TextureManager.h"
+#include "MathUtilityForText.h"
+#include<memory>
 #include <cassert>
 
 GameScene::GameScene() {}
 
-GameScene::~GameScene() {}
+GameScene::~GameScene() {
+    
+}
 
 void GameScene::Initialize() {
-
 	dxCommon_ = DirectXCommon::GetInstance();
 	input_ = Input::GetInstance();
 	audio_ = Audio::GetInstance();
+    //worldTransform_.Initialize();
+
+	//ビュープロジェクション
+	viewProjection_.Initialize();
+	//テクスチャ読み込み
+	textureHandle_ = TextureManager::Load("mario.jpg");
+    //3Dモデルの生成
+	model_.reset(Model::Create());
+	//プレイヤー
+	player_ = std::make_unique<Player>();
+	player_->Initialize(model_.get(),textureHandle_);
 }
 
-void GameScene::Update() {}
+void GameScene::Update() {
+	player_->Update();
+}
 
 void GameScene::Draw() {
 
@@ -41,7 +57,7 @@ void GameScene::Draw() {
 	/// <summary>
 	/// ここに3Dオブジェクトの描画処理を追加できる
 	/// </summary>
-
+	player_->Draw(viewProjection_);
 	// 3Dオブジェクト描画後処理
 	Model::PostDraw();
 #pragma endregion
