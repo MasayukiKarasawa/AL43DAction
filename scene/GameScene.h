@@ -9,6 +9,8 @@
 #include "ViewProjection.h"
 #include "WorldTransform.h"
 #include"Player.h"
+#include"Skydome.h"
+#include"Ground.h"
 #include <memory>
 /// <summary>
 /// ゲームシーン
@@ -57,10 +59,18 @@ private: // メンバ変数
 	//テクスチャハンドル
 	uint32_t textureHandle_ = 0u;
 	//モデル
-	std::unique_ptr<Model> model_;
+	std::unique_ptr<Model> modelSkydome_;
+	//モデル
+	std::unique_ptr<Model> modelGround_;
+	// モデル
+	std::unique_ptr<Model> modelFighter_;
 	// プレイヤー
 	std::unique_ptr<Player> player_;
-
+	// 地面
+	std::unique_ptr<Ground> ground_;
+	// 天球
+	std::unique_ptr<Skydome> skydome_;
+	
 
 	/// 
 	/// 

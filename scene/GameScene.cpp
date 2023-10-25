@@ -7,7 +7,7 @@
 GameScene::GameScene() {}
 
 GameScene::~GameScene() {
-    
+	//delete modelSkydome_; 
 }
 
 void GameScene::Initialize() {
@@ -17,17 +17,29 @@ void GameScene::Initialize() {
     //worldTransform_.Initialize();
 
 	//ビュープロジェクション
+	viewProjection_.farZ = 2000.0f;
+	viewProjection_.translation_ = {0.0f, 2.0f, -10.0f};
 	viewProjection_.Initialize();
 	//テクスチャ読み込み
 	textureHandle_ = TextureManager::Load("mario.jpg");
-    //3Dモデルの生成
-	model_.reset(Model::Create());
+  
 	//プレイヤー
+	modelFighter_.reset(Model::CreateFromOBJ("float",true));
 	player_ = std::make_unique<Player>();
-	player_->Initialize(model_.get(),textureHandle_);
+	player_->Initialize(modelFighter_.get());
+	//天球
+	modelSkydome_.reset(Model::CreateFromOBJ("skydome", true));
+	skydome_ = std::make_unique<Skydome>();
+	skydome_->Initialize(modelSkydome_.get());
+	// 地面
+	modelGround_.reset(Model::CreateFromOBJ("ground", true));
+	ground_ = std::make_unique<Ground>();
+	ground_->Initialize(modelGround_.get());
 }
 
-void GameScene::Update() {
+void GameScene::Update() { 
+	skydome_->Update();
+	ground_->Update();
 	player_->Update();
 }
 
@@ -43,7 +55,7 @@ void GameScene::Draw() {
 	/// <summary>
 	/// ここに背景スプライトの描画処理を追加できる
 	/// </summary>
-
+	
 	// スプライト描画後処理
 	Sprite::PostDraw();
 	// 深度バッファクリア
@@ -58,6 +70,8 @@ void GameScene::Draw() {
 	/// ここに3Dオブジェクトの描画処理を追加できる
 	/// </summary>
 	player_->Draw(viewProjection_);
+	skydome_->Draw(viewProjection_);
+	ground_->Draw(viewProjection_);
 	// 3Dオブジェクト描画後処理
 	Model::PostDraw();
 #pragma endregion

@@ -2,12 +2,12 @@
 #include "Vector3.h"
 #include"ImGuiManager.h"
 #include <cassert>
-void Player::Initialize(Model* model, uint32_t textureHandle) { 
+void Player::Initialize(Model* model) { 
 	//NULLポインタチェック
 	assert(model); 
 
 	//メンバ変数に受け取った値を代入
-    textureHandle_ = textureHandle;
+    //textureHandle_ = textureHandle;
 	model_ = model;
 	
 	// ワールド初期化
@@ -15,10 +15,10 @@ void Player::Initialize(Model* model, uint32_t textureHandle) {
 }
 
 void Player::Update() { 
-	//worldTransform_.TransferMatrix(); 
+	worldTransform_.TransferMatrix(); 
 }
 
-void Player::Draw(ViewProjection& viewProjection) { 
-	model_->Draw(worldTransform_, viewProjection, textureHandle_);
+void Player::Draw(const ViewProjection& viewProjection) { 
+	model_->Draw(worldTransform_, viewProjection);
 }
 

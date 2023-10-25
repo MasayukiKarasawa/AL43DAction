@@ -8,17 +8,15 @@
 #include "ViewProjection.h"
 #include "WorldTransform.h"
 #include <memory>
-class Player {
-private:
-	//ワールド変換データ
-	WorldTransform worldTransform_;
-	//モデル
-	Model* model_ = nullptr;
-	//テクスチャハンドル
-	uint32_t textureHandle_ = 0u;
-
+class Skydome {
 public:
 	void Initialize(Model* model);
 	void Update();
 	void Draw(const ViewProjection& viewProjection);
+
+private:
+	WorldTransform worldTransform_;
+	Model* model_ = nullptr;
+	// テクスチャハンドル
+	uint32_t textureHandle_ = 0u;
 };
