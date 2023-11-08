@@ -7,14 +7,14 @@
 GameScene::GameScene() {}
 
 GameScene::~GameScene() {
-	//delete modelSkydome_; 
+	
 }
 
 void GameScene::Initialize() {
 	dxCommon_ = DirectXCommon::GetInstance();
 	input_ = Input::GetInstance();
 	audio_ = Audio::GetInstance();
-    //worldTransform_.Initialize();
+    
 
 	//ビュープロジェクション
 	viewProjection_.farZ = 2000.0f;
@@ -35,9 +35,37 @@ void GameScene::Initialize() {
 	modelGround_.reset(Model::CreateFromOBJ("ground", true));
 	ground_ = std::make_unique<Ground>();
 	ground_->Initialize(modelGround_.get());
+	//デバッグカメラ
+	debugCamera_ = std::make_unique<DebugCamera>(WinApp::kWindowWidth, WinApp::kWindowHeight);
+	debugCamera_->SetFarZ(2000.0f);
+	//追従カメラ
+	followCamera_ = std::make_unique<FollowCamera>();
+	followCamera_->Initialize();
+
+	player_->SetViewProjection(&followCamera_->GetViewProjection());
+
+	followCamera_->SetTarget(&player_->GetWorldTransform());
+
+	AxisIndicator::GetInstance()->SetVisible(true);
+	AxisIndicator::GetInstance()->SetTargetViewProjection(&debugCamera_->GetViewProjection());
+
 }
 
 void GameScene::Update() { 
+
+	if (input_->TriggerKey(DIK_0)) {
+		isDebugCameraActive_ = !isDebugCameraActive_;
+	}
+	if (isDebugCameraActive_ == true) {
+		debugCamera_->Update();
+		viewProjection_.matView = debugCamera_->GetViewProjection().matView;
+		viewProjection_.matProjection = debugCamera_->GetViewProjection().matProjection;
+	} else {
+		followCamera_->Update();
+		viewProjection_.matView = followCamera_->GetViewProjection().matView;
+		viewProjection_.matProjection = followCamera_->GetViewProjection().matProjection;
+	}
+	viewProjection_.TransferMatrix();
 	skydome_->Update();
 	ground_->Update();
 	player_->Update();

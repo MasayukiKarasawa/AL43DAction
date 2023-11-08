@@ -8,10 +8,13 @@
 #include "Sprite.h"
 #include "ViewProjection.h"
 #include "WorldTransform.h"
-#include"Player.h"
-#include"Skydome.h"
-#include"Ground.h"
-#include <memory>
+#include "Player.h"
+#include "Skydome.h"
+#include "Ground.h"
+#include "DebugCamera.h"
+#include  <memory>
+#include "FollowCamera.h"
+#include "AxisIndicator.h"
 /// <summary>
 /// ゲームシーン
 /// </summary>
@@ -70,8 +73,11 @@ private: // メンバ変数
 	std::unique_ptr<Ground> ground_;
 	// 天球
 	std::unique_ptr<Skydome> skydome_;
-	
-
+	//デバッグカメラ
+	std::unique_ptr<DebugCamera> debugCamera_;
+	bool isDebugCameraActive_ = false;
+	//追従カメラ
+	std::unique_ptr<FollowCamera> followCamera_;
 	/// 
 	/// 
 };
