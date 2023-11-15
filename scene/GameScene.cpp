@@ -24,9 +24,14 @@ void GameScene::Initialize() {
 	textureHandle_ = TextureManager::Load("mario.jpg");
   
 	//プレイヤー
-	modelFighter_.reset(Model::CreateFromOBJ("float",true));
+	modelFighterBody_.reset(Model::CreateFromOBJ("float_Body",true));
+	modelFighterHead_.reset(Model::CreateFromOBJ("float_Head", true));
+	modelFighterL_arm_.reset(Model::CreateFromOBJ("float_L_arm", true));
+	modelFighterR_arm_.reset(Model::CreateFromOBJ("float_R_arm", true));
 	player_ = std::make_unique<Player>();
-	player_->Initialize(modelFighter_.get());
+	player_->Initialize(modelFighterBody_.get(),modelFighterHead_.get(),
+		modelFighterL_arm_.get(),modelFighterR_arm_.get());
+	player_ ->SetViewProjection(&followCamera_->GetViewProjection());
 	//天球
 	modelSkydome_.reset(Model::CreateFromOBJ("skydome", true));
 	skydome_ = std::make_unique<Skydome>();

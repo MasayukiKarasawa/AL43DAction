@@ -63,10 +63,15 @@ private: // メンバ変数
 	uint32_t textureHandle_ = 0u;
 	//モデル
 	std::unique_ptr<Model> modelSkydome_;
-	//モデル
 	std::unique_ptr<Model> modelGround_;
-	// モデル
 	std::unique_ptr<Model> modelFighter_;
+	std::unique_ptr<Model> modelFighterBody_;
+	std::unique_ptr<Model> modelFighterHead_;
+	std::unique_ptr<Model> modelFighterL_arm_;
+	std::unique_ptr<Model> modelFighterR_arm_;
+
+
+
 	// プレイヤー
 	std::unique_ptr<Player> player_;
 	// 地面
