@@ -4,24 +4,24 @@
 #include "MathUtilityForText.h"
 #include"Input.h"
 #include <cassert>
-void Player::Initialize(Model* modelBody, Model* modelHead, Model* modelL_arm, Model* modelR_arm) { 
+void Player::Initialize(const std::vector<Model*>&models) { 
 	//NULLポインタチェック
-	assert(modelBody); 
+	/*assert(modelBody); 
 	assert(modelHead);
 	assert(modelL_arm);
-	assert(modelR_arm);
+	assert(modelR_arm);*/
 
-	modelBody_ = modelBody;
+	/*modelBody_ = modelBody;
 	modelHead_ = modelHead;
 	modelL_arm_ = modelL_arm;
-	modelR_arm_ = modelR_arm;
+	modelR_arm_ = modelR_arm;*/
 	
+	BaseCharacter::Initialize(models);
 
 	// ワールド初期化
-	worldTransformBase_.Initialize();
 
 	worldTransformBody_.Initialize();
-	worldTransformBody_.parent_ = &worldTransformBase_;
+	worldTransformBody_.parent_ = &worldTransform_;
 
 	worldTransformHead_.Initialize();
 	worldTransformHead_.parent_ = &worldTransformBody_;
@@ -71,20 +71,15 @@ void Player::Update() {
 		move = TransformNormal(move, matRot);
 
 	}
-	worldTransformBase_.translation_ += move;
-	worldTransformBase_.rotation_.y = std::atan2(move.x, move.z);
+	worldTransform_.translation_ += move;
+	worldTransform_.rotation_.y = std::atan2(move.x, move.z);
 
-	worldTransformBase_.UpdateMatrix();
+	worldTransform_.UpdateMatrix();
 	worldTransformBody_.UpdateMatrix();
 	worldTransformHead_.UpdateMatrix();
 	worldTransformL_arm_.UpdateMatrix();
 	worldTransformR_arm_.UpdateMatrix();
-//worldTransformBase_.matWorld_ = MakeAffineMatrix(
-//	    worldTransformBase_.scale_, 
-//		worldTransformBase_.rotation_, 
-//		worldTransformBase_.translation_);
-//	worldTransformBase_.TransferMatrix();
-//
+
 
 	ImGui::Begin("Player");
 	ImGui::SliderFloat3(
@@ -104,10 +99,10 @@ void Player::Update() {
 }
 
 void Player::Draw(const ViewProjection& viewProjection) { 
-	modelBody_->Draw(worldTransformBody_, viewProjection);
-	modelHead_->Draw(worldTransformHead_, viewProjection);
-	modelL_arm_->Draw(worldTransformL_arm_, viewProjection);
-	modelR_arm_->Draw(worldTransformR_arm_, viewProjection);
+	models_[kModelIndexBody]->Draw(worldTransformBody_, viewProjection);
+	models_[kModelIndexHead]->Draw(worldTransformHead_, viewProjection);
+	models_[kModelIndexL_arm]->Draw(worldTransformL_arm_, viewProjection);
+	models_[kModelIndexR_arm]->Draw(worldTransformR_arm_, viewProjection);
 }
 
 void Player::InitializeFloatingGimmick() { floatingParameter_ = 0.0f; }

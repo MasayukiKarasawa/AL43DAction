@@ -2,14 +2,29 @@
 #include "Audio.h"
 #include "DirectXCommon.h"
 #include "Input.h"
-#include "Model.h"
 #include "SafeDelete.h"
 #include "Sprite.h"
+#include "Model.h"
 #include "ViewProjection.h"
 #include "WorldTransform.h"
 #include"MathUtilityForText.h"
+#include"BaseCharacter.h"
 #include <memory>
-class Player {
+class Player : public BaseCharacter {
+public:
+	enum {
+		kModelIndexBody,
+		kModelIndexHead,
+		kModelIndexL_arm,
+		kModelIndexR_arm,
+	};
+	void Initialize(const std::vector<Model*>& models)override;
+	void Update() override;
+	void Draw(const ViewProjection& viewProjection)override;
+	//const WorldTransform& GetWorldTransform() { return worldTransformBase_; }
+	void SetViewProjection(const ViewProjection* viewProjection) {
+		viewProjection_ = viewProjection;
+	}
 private:
 	//浮遊移動のサイクル
 	int32_t floatingCycle_ = 90;
@@ -19,7 +34,7 @@ private:
 	float idleArmAngleMax_ = 30.0f;
 
 	//ワールド変換データ
-	WorldTransform worldTransformBase_;
+	//WorldTransform worldTransformBase_;
 	WorldTransform worldTransformBody_;
 	WorldTransform worldTransformHead_;
 	WorldTransform worldTransformL_arm_;
@@ -42,14 +57,4 @@ private:
 	uint32_t textureHandle_ = 0u;
 	//入力
 	Input* input_ = nullptr;
-	
-
-public:
-	void Initialize(Model* modelBody,Model* modelHead,Model* modelL_arm,Model* modelR_arm);
-	void Update();
-	void Draw(const ViewProjection& viewProjection);
-	const WorldTransform& GetWorldTransform() { return worldTransformBase_; }
-	void SetViewProjection(const ViewProjection* viewProjection) {
-		viewProjection_ = viewProjection;
-	}
 };
