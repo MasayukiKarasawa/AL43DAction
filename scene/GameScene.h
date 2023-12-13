@@ -73,7 +73,7 @@ private: // メンバ変数
 	std::unique_ptr<Model> modelEnemyBody_;
 	std::unique_ptr<Model> modelEnemyL_arm_;
 	std::unique_ptr<Model> modelEnemyR_arm_;
-
+	std::unique_ptr<Model> modelHammer_;
 
 	// プレイヤー
 	std::unique_ptr<Player> player_;

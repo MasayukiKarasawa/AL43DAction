@@ -43,6 +43,7 @@ void GameScene::Initialize() {
 	modelEnemyR_arm_.reset(Model::CreateFromOBJ("needle_R_arm", true));
     modelSkydome_.reset(Model::CreateFromOBJ("skydome", true));
 	modelGround_.reset(Model::CreateFromOBJ("ground", true));
+	modelHammer_.reset(Model::CreateFromOBJ("hammer"));
 	//天球
 	skydome_ = std::make_unique<Skydome>();
 	skydome_->Initialize(modelSkydome_.get());
